@@ -31,4 +31,4 @@ var server = http.createServer(function (req,res) {
     });
 });
 var io = require('socket.io').listen(server);
-server.listen(8000);
+server.listen(process.env.PORT || 3000);
