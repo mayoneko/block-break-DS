@@ -38,9 +38,9 @@ function ballDelete(id) {
 }
 
 function ballDebug(data) {
-    balls[data.id].x=data.x;
-    balls[data.id].y=data.y;
-    balls[data.id].speed=data.speed;
+    balls[data.id].x=boxX*data.x;
+    balls[data.id].y=boxY*data.y;
+    balls[data.id].speed=boxX*data.speed;
     balls[data.id].theta=data.theta;
 }
 
