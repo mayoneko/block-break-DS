@@ -7,6 +7,7 @@ var boxX, boxY;
 
 function setup() {
     createCanvas((windowWidth - 40) / 2, (windowHeight - 40) / 2);
+    frameRate(30);
     rectMode(RADIUS);
     ellipseMode(RADIUS);
     boxX = width;
