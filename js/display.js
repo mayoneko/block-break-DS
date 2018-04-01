@@ -8,7 +8,7 @@ var barY;
 var barH;
 
 function setup() {
-    createCanvas(windowWidth - 40, windowHeight - 40);
+    createCanvas((windowWidth - 40)/2, (windowHeight - 40)/2);
     rectMode(RADIUS);
     ellipseMode(RADIUS);
     boxX = width;
