@@ -12,7 +12,7 @@ var server = http.createServer(function (req,res) {
     var targetFile = __dirname + lookup;
     fs.exists(targetFile, function (exists) {
         if (exists) {
-            fs.readFile(targetFile, function (err, data) {
+            fs.readFile(targetFile,'utf8', function (err, data) {
                 if (err) {
                     res.writeHead(500);
                     res.end('Server Error !');
@@ -31,4 +31,22 @@ var server = http.createServer(function (req,res) {
     });
 });
 var io = require('socket.io').listen(server);
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 8000);
+
+io.on('connection', function(socket) {
+    socket.on("racketCreate",
+        function (data) {
+            socket.broadcast.emit("racketCreate",data);
+        }
+    );
+    socket.on("ballCreate",
+        function (data) {
+            socket.broadcast.emit("ballCreate",data);
+        }
+    );
+    socket.on("ballDelete",
+        function (data) {
+            socket.broadcast.emit("ballDelete",data);
+        }
+    );
+});

@@ -12,10 +12,18 @@ function setup() {
     boxX = width;
     boxY = width * 2;
     noStroke();
-    bar = new Bar(getUniqueStr(), createColor());
-    socket.emit("racketCreate", bar.id, bar.fColor);
-    ball = new Ball(1/2, 7 / 8, 1/300, (int)(random(200, 340)), bar.id);
-    socket.emit("ballCreate", 1/2, 7 / 8, 1/300, ball.theta, bar.id);
+    var fc=createColor();
+    bar = new Bar(getUniqueStr(), fc);
+    ball = new Ball(1 / 2, 7 / 8, 1 / 300, (int)(random(200, 340)), bar.id);
+    var data={
+        x:1/2,
+        y:7/8,
+        speed:1/300,
+        theta:ball.theta,
+        id:bar.id,
+        fc:fc
+    };
+    socket.emit("ballCreate", data);
     var c = color(bar.fColor);
     fill(c);
 }
@@ -75,11 +83,11 @@ class Bar {
     }
 
     touchMove(per) {
-        this.x += boxX * per/10;
+        this.x += boxX * per / 10;
     }
 
-    turnMove(mvX){
-        this.x=mvX;
+    turnMove(mvX) {
+        this.x = mvX;
     }
 
     display() {
@@ -130,12 +138,12 @@ class Ball {
             }
             if (tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) {
                 if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW) {
-                    tempY -= (tempY + boxX / 60 - (barY-barH)) * 2;
+                    tempY -= (tempY + boxX / 60 - (barY - barH)) * 2;
                     this.theta = 360 - this.theta;
                 }
             }
             count++;
-        } while (tempX - boxX / 60 < 0 || tempX + boxX / 60 > boxX || tempY - boxX / 60 < 0 || ((tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH)&&tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW));
+        } while (tempX - boxX / 60 < 0 || tempX + boxX / 60 > boxX || tempY - boxX / 60 < 0 || ((tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW));
         this.x = tempX;
         this.y = tempY;
         while (this.theta > 360) {
@@ -148,10 +156,10 @@ class Ball {
     }
 
     display() {
-        if(this.y-(boxY-height)>0){
+        if (this.y - (boxY - height) > 0) {
             ellipse(this.x, this.y - (boxY - height), boxX / 60, boxX / 60);
-        }else{
-            triangle(this.x,30,this.x+15,45,this.x-15,45);
+        } else {
+            triangle(this.x, 30, this.x + 15, 45, this.x - 15, 45);
         }
     }
 }
