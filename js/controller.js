@@ -140,14 +140,6 @@ class Ball {
                 if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW) {
                     tempY -= (tempY + boxX / 60 - (barY - barH)) * 2;
                     this.theta = 360 - this.theta;
-                    var data={
-                        x:this.x/boxX,
-                        y:this.y/boxY,
-                        speed:this.speed/boxX,
-                        theta:this.theta,
-                        id:this.id
-                    };
-                    socket.emit("ballDebug",data);
                 }
             }
             count++;
@@ -160,6 +152,15 @@ class Ball {
         // print("X="+this.x+",Y="+this.y);
         if (this.y > boxY) {
             socket.emit("ballDelete", this.id);
+        }else{
+            var data={
+                x:this.x/boxX,
+                y:this.y/boxY,
+                speed:this.speed/boxX,
+                theta:this.theta,
+                id:this.id
+            };
+            socket.emit("ballDebug",data);
         }
     }
 
