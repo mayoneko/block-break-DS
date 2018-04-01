@@ -34,11 +34,6 @@ var io = require('socket.io').listen(server);
 server.listen(process.env.PORT || 8000);
 
 io.on('connection', function(socket) {
-    socket.on("racketCreate",
-        function (data) {
-            socket.broadcast.emit("racketCreate",data);
-        }
-    );
     socket.on("ballCreate",
         function (data) {
             socket.broadcast.emit("ballCreate",data);
@@ -47,6 +42,11 @@ io.on('connection', function(socket) {
     socket.on("ballDelete",
         function (data) {
             socket.broadcast.emit("ballDelete",data);
+        }
+    );
+    socket.on("ballDebug",
+        function (data) {
+            socket.broadcast.emit("ballDebug",data);
         }
     );
 });

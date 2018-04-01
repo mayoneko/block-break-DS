@@ -18,6 +18,7 @@ function setup() {
     noStroke();
     socket.on('ballCreate', ballCreate);
     socket.on('ballDelete', ballDelete);
+    socket.on('ballDelete', ballDebug);
 }
 
 function draw() {
@@ -30,11 +31,17 @@ function draw() {
 
 function ballCreate(data) {
     balls[data.id] = new Ball(data.x,data.y,data.speed,data.theta,data.id,data.fc);
-    console.log(data.fc);
 }
 
 function ballDelete(id) {
     delete balls[id];
+}
+
+function ballDebug(data) {
+    balls[data.id].x=data.x;
+    balls[data.id].y=data.y;
+    balls[data.id].speed=data.speed;
+    balls[data.id].theta=data.theta;
 }
 
 class Ball {
