@@ -19,7 +19,7 @@ function setup() {
     noStroke();
     socket.on('ballCreate', ballCreate);
     socket.on('ballDelete', ballDelete);
-    socket.on('ballDelete', ballDebug);
+    socket.on('ballDebug', ballDebug);
 }
 
 function draw() {
