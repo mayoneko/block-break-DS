@@ -38,10 +38,14 @@ function ballDelete(id) {
 }
 
 function ballDebug(data) {
-    balls[data.id].x=boxX*data.x;
-    balls[data.id].y=boxY*data.y;
-    balls[data.id].speed=boxX*data.speed;
-    balls[data.id].theta=data.theta;
+    if(balls.indexOf(data.id)>-1){
+        balls[data.id].x=boxX*data.x;
+        balls[data.id].y=boxY*data.y;
+        balls[data.id].speed=boxX*data.speed;
+        balls[data.id].theta=data.theta;
+    }else{
+        console.log(data.id);
+    }
 }
 
 class Ball {

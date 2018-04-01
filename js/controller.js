@@ -6,22 +6,22 @@ var ball;
 var boxX, boxY;
 
 function setup() {
-    createCanvas((windowWidth - 40)/2, (windowHeight - 40)/2);
+    createCanvas((windowWidth - 40) / 2, (windowHeight - 40) / 2);
     rectMode(RADIUS);
     ellipseMode(RADIUS);
     boxX = width;
     boxY = width * 2;
     noStroke();
-    var fc=createColor();
+    var fc = createColor();
     bar = new Bar(getUniqueStr(), fc);
     ball = new Ball(1 / 2, 7 / 8, 1 / 300, (int)(random(200, 340)), bar.id);
-    var data={
-        x:1/2,
-        y:7/8,
-        speed:1/300,
-        theta:ball.theta,
-        id:bar.id,
-        fc:fc
+    var data = {
+        x: 1 / 2,
+        y: 7 / 8,
+        speed: 1 / 300,
+        theta: ball.theta,
+        id: bar.id,
+        fc: fc
     };
     socket.emit("ballCreate", data);
     var c = color(bar.fColor);
@@ -152,15 +152,15 @@ class Ball {
         // print("X="+this.x+",Y="+this.y);
         if (this.y > boxY) {
             socket.emit("ballDelete", this.id);
-        }else{
-            var data={
-                x:this.x/boxX,
-                y:this.y/boxY,
-                speed:this.speed/boxX,
-                theta:this.theta,
-                id:this.id
+        } else {
+            var data = {
+                x: this.x / boxX,
+                y: this.y / boxY,
+                speed: this.speed / boxX,
+                theta: this.theta,
+                id: this.id
             };
-            socket.emit("ballDebug",data);
+            socket.emit("ballDebug", data);
         }
     }
 
