@@ -14,11 +14,11 @@ function setup() {
     noStroke();
     var fc = createColor();
     bar = new Bar(getUniqueStr(), fc);
-    ball = new Ball(1 / 2, 7 / 8, 1 / 200, (int)(random(200, 340)), bar.id);
+    ball = new Ball(1 / 2, 7 / 8, 1 / 100, (int)(random(200, 340)), bar.id);
     var data = {
         x: 1 / 2,
         y: 7 / 8,
-        speed: 1 / 300,
+        speed: 1 / 100,
         theta: ball.theta,
         id: bar.id,
         fc: fc
