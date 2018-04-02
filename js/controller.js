@@ -2,10 +2,16 @@
 
 var socket = io.connect();
 var bar;
+var blocks = [];
 var ball;
 var boxX, boxY;
 
 function setup() {
+    socket.on("newComer", function (data) {
+        for (var i in data) {
+            blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
+        }
+    });
     createCanvas((windowWidth - 40) / 2, (windowHeight - 40) / 2);
     rectMode(RADIUS);
     ellipseMode(RADIUS);
@@ -24,6 +30,7 @@ function setup() {
         fc: fc
     };
     socket.emit("ballCreate", data);
+    socket.on('blockConfig', blockConfig);
     var c = color(bar.fColor);
     fill(c);
 }
@@ -34,7 +41,7 @@ function draw() {
         bar.turnMove(mvX);
     }
     background(255);
-    ball.move(bar.x, bar.y, bar.w, bar.h);
+    ball.move(bar.x, bar.y, bar.w, bar.h,blocks);
     ball.display();
     bar.display();
 }
@@ -42,6 +49,10 @@ function draw() {
 function touchEnded() {
     var per = (mouseX - bar.x) / boxX;
     bar.touchMove(per);
+}
+
+function blockConfig(data) {
+    delete blocks[data];
 }
 
 function createColor() {
@@ -62,6 +73,7 @@ function createColor() {
                 fColor += "7f";
                 break;
         }
+        st.push(temp);
     }
     return fColor;
 }
@@ -70,6 +82,16 @@ function getUniqueStr(myStrong) {
     var strong = 1000;
     if (myStrong) strong = myStrong;
     return new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16)
+}
+
+class Block {
+    constructor(x, y, id) {
+        this.x = boxX * x;
+        this.y = boxY * y;
+        this.w = boxX / 60;
+        this.h = boxX / 120;
+        this.id = id;
+    }
 }
 
 class Bar {
@@ -104,7 +126,7 @@ class Ball {
         this.id = id;
     }
 
-    move(barX, barY, barW, barH) {
+    move(barX, barY, barW, barH, blocks) {
         var mx = this.speed * cos(radians(this.theta));
         var my = this.speed * sin(radians(this.theta));
         var tempX = this.x;
@@ -140,17 +162,24 @@ class Ball {
                 if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW) {
                     tempY -= (tempY + boxX / 60 - (barY - barH)) * 2;
                     this.theta = 360 - this.theta;
-                    this.speed+=boxX/1000;
-                }else if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y)+boxX/60 > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX - barW) {
-                    tempY -= (tempX+boxX/60-(barX-barW))+(tempY+boxX/60-(barY-barH));
-                    tempX -= (tempX+boxX/60-(barX-barW))+(tempY+boxX/60-(barY-barH));
+                    this.speed += boxX / 1000;
+                } else if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) + boxX / 60 > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX - barW) {
+                    tempY -= (tempX + boxX / 60 - (barX - barW)) + (tempY + boxX / 60 - (barY - barH));
+                    tempX -= (tempX + boxX / 60 - (barX - barW)) + (tempY + boxX / 60 - (barY - barH));
                     this.theta = 360 + 270 - this.theta;
-                    this.speed+=boxX/1000;
-                }else if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y)-boxX/60 < barX + barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX + barW) {
-                    tempY -= (tempX-boxX/60-(barX+barW))+(tempY+boxX/60-(barY-barH));
-                    tempX += (tempX-boxX/60-(barX+barW))+(tempY+boxX/60-(barY-barH));
+                    this.speed += boxX / 1000;
+                } else if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) - boxX / 60 < barX + barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX + barW) {
+                    tempY -= (tempX - boxX / 60 - (barX + barW)) + (tempY + boxX / 60 - (barY - barH));
+                    tempX += (tempX - boxX / 60 - (barX + barW)) + (tempY + boxX / 60 - (barY - barH));
                     this.theta = 270 + this.theta;
-                    this.speed+=boxX/1000;
+                    this.speed += boxX / 1000;
+                }
+            }
+            for (var i in blocks) {
+                console.log(blocks[i].x+","+blocks[i].y+","+blocks[i].w+","+blocks[i].h);
+                if (tempX > blocks[i].x - blocks[i].w && tempX < blocks[i].x + blocks[i].w && tempY > blocks[i].y - blocks[i].h && tempY < blocks[i].y + blocks[i].h) {
+                    socket.emit('blockConfig', blocks[i].id);
+                    delete blocks[i];
                 }
             }
             count++;

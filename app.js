@@ -33,7 +33,10 @@ var server = http.createServer(function (req,res) {
 var io = require('socket.io').listen(server);
 server.listen(process.env.PORT || 8000);
 
+var blockData=null;
+
 io.on('connection', function(socket) {
+    socket.emit("newComer",blockData);
     socket.on("ballCreate",
         function (data) {
             socket.broadcast.emit("ballCreate",data);
@@ -47,6 +50,16 @@ io.on('connection', function(socket) {
     socket.on("ballDebug",
         function (data) {
             socket.broadcast.emit("ballDebug",data);
+        }
+    );
+    socket.on("blockConfig",
+        function (data) {
+            socket.broadcast.emit("blockConfig",data);
+        }
+    );
+    socket.on("newComer",
+        function (data) {
+            blockData=data;
         }
     );
 });

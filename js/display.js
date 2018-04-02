@@ -2,6 +2,7 @@
 
 var socket = io.connect();
 var balls = [];
+var blocks = [];
 var boxX, boxY;
 var barY;
 var barH;
@@ -14,18 +15,31 @@ function setup() {
     boxY = width * 2;
     barY = boxY * 39 / 40;
     barH = boxY / 80;
+    var blockData=[];
+    for(var i=0;i<50;i++){
+        blocks[i]=new Block(((i%10)+3.5)/16,((int)(i/10)+2)/50,i);
+        blockData[i]={
+            x:((i%10)+3.5)/16,
+            y:((int)(i/10)+2)/50,
+            id:i
+        };
+    }
     noStroke();
+    socket.emit("newComer",blockData);
     socket.on('ballCreate', ballCreate);
     socket.on('ballDelete', ballDelete);
     socket.on('ballDebug', ballDebug);
-    background(255);
-    blendMode(DIFFERENCE);
+    socket.on('blockConfig', blockConfig);
 }
 
 function draw() {
+    background(255);
     for (var id in balls) {
         balls[id].move();
         balls[id].display();
+    }
+    for(var i in blocks){
+        blocks[i].display();
     }
 }
 
@@ -45,6 +59,29 @@ function ballDebug(data) {
         balls[data.id].theta=data.theta;
     }else{
         console.log(data.id);
+    }
+}
+
+function blockConfig(data) {
+    delete blocks[data];
+    if(blocks.length===0){
+        for(var i=0;i<50;i++){
+            blocks[i]=new Block(((i%10)+3.5)/16,((int)(i/10)+2)/50,i);
+        }
+    }
+}
+
+class Block{
+    constructor(x,y,id){
+        this.x=boxX*x;
+        this.y=boxY*y;
+        this.w=boxX/60;
+        this.h=boxX/120;
+        this.id=id;
+    }
+    display(){
+        fill(191);
+        rect(this.x,this.y,this.w,this.h);
     }
 }
 
