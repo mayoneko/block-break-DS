@@ -19,7 +19,7 @@ function setup() {
     socket.on('ballDelete', ballDelete);
     socket.on('ballDebug', ballDebug);
     background(255);
-    blendMode(SUBTRACT);
+    blendMode(DIFFERENCE);
 }
 
 function draw() {
