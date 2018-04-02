@@ -39,7 +39,7 @@ function ballDelete(id) {
 }
 
 function ballDebug(data) {
-    if(balls.indexOf(data.id)>-1){
+    if(balls[data.id]!==undefined){
         balls[data.id].x=boxX*data.x;
         balls[data.id].y=boxY*data.y;
         balls[data.id].speed=boxX*data.speed;
