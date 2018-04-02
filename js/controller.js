@@ -127,17 +127,14 @@ class Ball {
             if (tempX - boxX / 60 < 0) {
                 tempX += (boxX / 60 - tempX) * 2;
                 this.theta = 540 - this.theta;
-                this.speed+=boxX/1000;
             }
             if (tempX + boxX / 60 > boxX) {
                 tempX -= (tempX + boxX / 60 - boxX) * 2;
                 this.theta = 540 - this.theta;
-                this.speed+=boxX/1000;
             }
             if (tempY - boxX / 60 < 0) {
                 tempY += (boxX / 60 - tempY) * 2;
                 this.theta = 360 - this.theta;
-                this.speed+=boxX/1000;
             }
             if (tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) {
                 if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW) {
