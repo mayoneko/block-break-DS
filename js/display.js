@@ -18,10 +18,11 @@ function setup() {
     socket.on('ballCreate', ballCreate);
     socket.on('ballDelete', ballDelete);
     socket.on('ballDebug', ballDebug);
+    background(255);
+    blendMode(SUBTRACT);
 }
 
 function draw() {
-    background(255);
     for (var id in balls) {
         balls[id].move();
         balls[id].display();
