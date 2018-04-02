@@ -140,6 +140,14 @@ class Ball {
                 if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW) {
                     tempY -= (tempY + boxX / 60 - (barY - barH)) * 2;
                     this.theta = 360 - this.theta;
+                }else if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y)+boxX/60 > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX - barW) {
+                    tempY -= (tempX+boxX/60-(barX-barW))+(tempY+boxX/60-(barY-barH));
+                    tempX -= (tempX+boxX/60-(barX-barW))+(tempY+boxX/60-(barY-barH));
+                    this.theta = 360 + 270 - this.theta;
+                }else if (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y)-boxX/60 < barX + barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX + barW) {
+                    tempY -= (tempX-boxX/60-(barX+barW))+(tempY+boxX/60-(barY-barH));
+                    tempX += (tempX-boxX/60-(barX+barW))+(tempY+boxX/60-(barY-barH));
+                    this.theta = 270 + this.theta;
                 }
             }
             count++;
@@ -149,6 +157,8 @@ class Ball {
         while (this.theta > 360) {
             this.theta -= 360;
         }
+        this.speed+=boxX/1000;
+
         // print("X="+this.x+",Y="+this.y);
         if (this.y > boxY) {
             socket.emit("ballDelete", this.id);
