@@ -1,7 +1,6 @@
 //上画面
 
 var socket = io.connect();
-var bars = [];
 var balls = [];
 var boxX, boxY;
 var barY;
@@ -9,7 +8,6 @@ var barH;
 
 function setup() {
     createCanvas((windowWidth - 40)/2, (windowHeight - 40)/2);
-    frameRate(30);
     rectMode(RADIUS);
     ellipseMode(RADIUS);
     boxX = width;
