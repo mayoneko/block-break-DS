@@ -187,7 +187,7 @@ class Ball {
                 }
             }
             count++;
-        } while (tempX - boxX / 60 < 0 || tempX + boxX / 60 > boxX || tempY - boxX / 60 < 0 || ((tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW));
+        } while (tempX - boxX / 60 < 0 || tempX + boxX / 60 > boxX || tempY - boxX / 60 < 0 || ((tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) && ((tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW)||(tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) + boxX / 60 > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX - barW)||(tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) - boxX / 60 < barX + barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX + barW))));
         this.x = tempX;
         this.y = tempY;
         while (this.theta > 360) {
