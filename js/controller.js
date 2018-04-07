@@ -9,7 +9,7 @@ var boxX, boxY;
 function setup() {
     socket.on("newComer", function (data) {
         for (var i in data) {
-            if(data[i]!==null){
+            if (data[i] !== null) {
                 blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
             }
         }
@@ -55,9 +55,9 @@ function touchEnded() {
 
 function blockConfig(data) {
     delete blocks[data];
-    var delCount=0;
-    for(var i=0;i<50;i++){
-        if(blocks[i]===null){
+    var delCount = 0;
+    for (var i = 0; i < 50; i++) {
+        if (blocks[i] === null||blocks[i] === undefined) {
             delCount++;
         }
     }
