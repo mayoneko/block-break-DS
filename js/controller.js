@@ -9,9 +9,8 @@ var boxX, boxY;
 function setup() {
     socket.on("newComer", function (data) {
         for (var i in data) {
-            if(data[i]!==undefined){
-                blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
-            }
+            blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
+
         }
     });
     createCanvas((windowWidth - 40) / 2, (windowHeight - 40) / 2);
@@ -43,7 +42,7 @@ function draw() {
         bar.turnMove(mvX);
     }
     background(255);
-    ball.move(bar.x, bar.y, bar.w, bar.h,blocks);
+    ball.move(bar.x, bar.y, bar.w, bar.h, blocks);
     ball.display();
     bar.display();
 }
@@ -55,9 +54,15 @@ function touchEnded() {
 
 function blockConfig(data) {
     delete blocks[data];
-    if(blocks.length===0){
-        for(var i=0;i<50;i++){
-            blocks[i]=new Block(((i%10)+3.5)/16,((int)(i/10)+2)/50,i);
+    var delCount=0;
+    for(var i=0;i<50;i++){
+        if(blocks[i]===undefined){
+            delCount++;
+        }
+    }
+    if (delCount === 50) {
+        for (var i = 0; i < 50; i++) {
+            blocks[i] = new Block(((i % 10) + 3.5) / 16, ((int)(i / 10) + 2) / 50, i);
         }
     }
 }
@@ -183,13 +188,13 @@ class Ball {
                 }
             }
             for (var i in blocks) {
-                console.log(blocks[i].x+","+blocks[i].y+","+blocks[i].w+","+blocks[i].h);
+                console.log(blocks[i].x + "," + blocks[i].y + "," + blocks[i].w + "," + blocks[i].h);
                 if (tempX > blocks[i].x - blocks[i].w && tempX < blocks[i].x + blocks[i].w && tempY > blocks[i].y - blocks[i].h && tempY < blocks[i].y + blocks[i].h) {
                     socket.emit('blockConfig', blocks[i].id);
                 }
             }
             count++;
-        } while (tempX - boxX / 60 < 0 || tempX + boxX / 60 > boxX || tempY - boxX / 60 < 0 || ((tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) && ((tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW)||(tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) + boxX / 60 > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX - barW)||(tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) - boxX / 60 < barX + barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX + barW))));
+        } while (tempX - boxX / 60 < 0 || tempX + boxX / 60 > boxX || tempY - boxX / 60 < 0 || ((tempY + boxX / 60 >= barY - barH && this.y + boxX / 60 < barY - barH) && ((tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX + barW) || (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) + boxX / 60 > barX - barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) < barX - barW) || (tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) - boxX / 60 < barX + barW && tempX - (tempX - this.x) * (tempY - (barY - barH)) / (tempY - this.y) > barX + barW))));
         this.x = tempX;
         this.y = tempY;
         while (this.theta > 360) {
