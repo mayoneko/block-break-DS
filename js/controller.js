@@ -57,7 +57,7 @@ function blockConfig(data) {
     delete blocks[data];
     var delCount=0;
     for(var i=0;i<50;i++){
-        if(blocks[i]===undefined){
+        if(blocks[i]===null){
             delCount++;
         }
     }
