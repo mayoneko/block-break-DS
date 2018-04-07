@@ -65,6 +65,7 @@ function ballDebug(data) {
 function blockConfig(data) {
     delete blocks[data];
     var blockdata=[];
+    var allDel=true;
     for (var i in blocks) {
         if (blocks[i] !== undefined) {
             blockdata[i] = {
@@ -72,9 +73,10 @@ function blockConfig(data) {
                 y: ((int)(i / 10) + 2) / 50,
                 id: i
             };
+            allDel=false;
         }
     }
-    if (blockdata !== undefined) {
+    if (!allDel) {
         socket.emit("newComer", blockdata);
     } else {
         for (var i = 0; i < 50; i++) {
