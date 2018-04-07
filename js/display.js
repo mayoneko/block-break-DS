@@ -67,7 +67,7 @@ function blockConfig(data) {
     var blockdata=[];
     var allDel=true;
     for (var i in blocks) {
-        if (blocks[i] !== undefined) {
+        if (blocks[i] !== null) {
             blockdata[i] = {
                 x: ((i % 10) + 3.5) / 16,
                 y: ((int)(i / 10) + 2) / 50,
