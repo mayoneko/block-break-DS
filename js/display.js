@@ -64,7 +64,7 @@ function ballDebug(data) {
 
 function blockConfig(data) {
     delete blocks[data];
-    var blockdata;
+    var blockdata=[];
     for (var i in blocks) {
         if (blocks[i] !== undefined) {
             blockdata[i] = {
