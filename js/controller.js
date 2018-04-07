@@ -9,7 +9,7 @@ var boxX, boxY;
 function setup() {
     socket.on("newComer", function (data) {
         for (var i in data) {
-            if(data!==undefined){
+            if(data[i]!==undefined){
                 blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
             }
         }
