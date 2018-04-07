@@ -80,9 +80,9 @@ function blockConfig(data) {
         for (var i = 0; i < 50; i++) {
             blocks[i] = new Block(((i % 10) + 3.5) / 16, ((int)(i / 10) + 2) / 50, i);
             blockdata[i] = {
-                x: blocks[i].x,
-                y: blocks[i].y,
-                id: blocks[i].id
+                x: ((i % 10) + 3.5) / 16,
+                y: ((int)(i / 10) + 2) / 50,
+                id: i
             };
         }
         console.log("piyo");
