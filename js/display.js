@@ -85,6 +85,7 @@ function blockConfig(data) {
                 id: blocks[i].id
             };
         }
+        console.log("piyo");
         socket.emit("newComer", blockdata);
     }
 }
