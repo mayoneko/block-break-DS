@@ -9,7 +9,9 @@ var boxX, boxY;
 function setup() {
     socket.on("newComer", function (data) {
         for (var i in data) {
-            blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
+            if(data!==undefined){
+                blocks[data[i].id] = new Block(data[i].x, data[i].y, data[i].id);
+            }
         }
     });
     createCanvas((windowWidth - 40) / 2, (windowHeight - 40) / 2);
