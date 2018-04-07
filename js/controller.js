@@ -53,6 +53,11 @@ function touchEnded() {
 
 function blockConfig(data) {
     delete blocks[data];
+    if(blocks.length===0){
+        for(var i=0;i<50;i++){
+            blocks[i]=new Block(((i%10)+3.5)/16,((int)(i/10)+2)/50,i);
+        }
+    }
 }
 
 function createColor() {
@@ -179,7 +184,6 @@ class Ball {
                 console.log(blocks[i].x+","+blocks[i].y+","+blocks[i].w+","+blocks[i].h);
                 if (tempX > blocks[i].x - blocks[i].w && tempX < blocks[i].x + blocks[i].w && tempY > blocks[i].y - blocks[i].h && tempY < blocks[i].y + blocks[i].h) {
                     socket.emit('blockConfig', blocks[i].id);
-                    delete blocks[i];
                 }
             }
             count++;
